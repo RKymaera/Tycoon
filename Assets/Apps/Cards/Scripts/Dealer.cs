@@ -5,7 +5,7 @@ using Apps.Common;
 
 namespace Apps.Cards
 {
-public class DeckManager : MonoBehaviour
+public class Dealer : MonoBehaviour
 {
     public List<PlayingCard> Deck = null;
 
