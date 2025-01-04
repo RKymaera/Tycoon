@@ -1,9 +1,12 @@
 using UnityEngine;
+using Apps.Players;
+using System.Collections.Generic;
+using System;
 
 
 namespace Apps.Cards
 {
-public class PlayingCard : ScriptableObject
+public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
 {
 #region Enums
     // Sorted by value
@@ -85,7 +88,9 @@ public class PlayingCard : ScriptableObject
 
     public Ranks Rank = Ranks.Joker;
     public Suits Suit = Suits.Joker;
+    public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
+    public PlayerId Owner;
 
 
 #region Operators
@@ -105,6 +110,20 @@ public class PlayingCard : ScriptableObject
 
     // Hash code is overridden to reflect the Rank and Suit of the card
     public override int GetHashCode() => (int)Rank * 100 + (int)Suit;
+
+    // IComparable implementation
+    public int CompareTo(PlayingCard other)
+    {
+        if (this.Rank == Ranks.Joker && other.gameObject != this.gameObject)
+            return -1;
+        if (this < other)
+            return -1;
+        if (this == other && this.Suit < other.Suit)
+            return -1;
+        if (this == other && this.Suit == other.Suit)
+            return 0;
+        return 1;
+    }
 
 
     public static string ToString(PlayingCard card)
