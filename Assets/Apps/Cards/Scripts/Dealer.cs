@@ -13,6 +13,9 @@ public class Dealer : MonoBehaviour
     {
         Deck = CreateDeck();
         Debug.Log("Deck created with " + Deck.Count + " cards.");
+
+        Shuffle();
+        DealHandToPlayers();
     }
 
     public List<PlayingCard> CreateDeck()
@@ -42,6 +45,23 @@ public class Dealer : MonoBehaviour
         deck.Add(ScriptableObject.CreateInstance<PlayingCard>());
 
         return deck;
+    }
+
+    private void Shuffle()
+    {
+        // Fisher-Yates shuffle
+        for (int i = 0; i < Deck.Count; i++)
+        {
+            var temp = Deck[i];
+            int randomIndex = Random.Range(i, Deck.Count);
+            Deck[i] = Deck[randomIndex];
+            Deck[randomIndex] = temp;
+        }
+    }
+
+    private void DealHandToPlayers()
+    {
+
     }
 }
 }
