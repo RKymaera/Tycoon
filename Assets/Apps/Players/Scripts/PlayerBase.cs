@@ -28,6 +28,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
     public List<PlayingCard> LastPlayedCards { get { return _lastPlayedCards; } }
     [SerializeField] private TextMeshPro _nameText;
     [SerializeField] private Dealer _dealer;
+    [SerializeField] private PlayerManager _playerManager;
 
     public bool IsOpenHand = true;
 
@@ -45,6 +46,14 @@ public class PlayerBase : MonoBehaviour, IPlayer
             Debug.LogError("Dealer not found.");
         }
         _dealer.DealHand += OnReceivedHand;
+        if (_playerManager == null)
+        {
+            _playerManager = FindAnyObjectByType<PlayerManager>();
+        }
+        if (_playerManager == null)
+        {
+            Debug.LogError("PlayerManager not found.");
+        }
     }
 
     public void OnReceivedHand(HandList hand, PlayerId playerId)
@@ -70,7 +79,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
         foreach (var card in Hand)
         {
             card.transform.SetParent(transform);
-            card.transform.localPosition = new Vector3((i-Hand.Count/2) * PlayerManager.CardSeparation, 0, 0);
+            card.transform.localPosition = new Vector3(i * _playerManager.CardSeparation.x, i * _playerManager.CardSeparation.y, i * _playerManager.CardSeparation.z);
             i++;
         }
     }

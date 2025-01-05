@@ -7,6 +7,8 @@ using TMPro;
 
 using HandList = System.Collections.Generic.SortedSet<Apps.Cards.PlayingCard>;
 using Sirenix.Utilities;
+using System.Linq;
+using UnityEngine.UI;
 
 namespace Apps.Cards
 {
@@ -45,7 +47,12 @@ public class Dealer : MonoBehaviour
                 card.Rank = rank;
                 card.Suit = suit;
                 card.gameObject.name = card.CardName;
-                card.gameObject.GetComponentsInChildren<TextMeshPro>().ForEach(text => text.text = card.CardName);
+                var cardTexts = card.gameObject.GetComponentsInChildren<TextMeshPro>();
+                foreach (var text in cardTexts)
+                {
+                    text.text = card.CardName;
+                    text.color = card.CardColour;
+                }
                 deck.Add(card);
             }
         }
@@ -53,9 +60,18 @@ public class Dealer : MonoBehaviour
         // Add 4 Jokers
         var joker = Instantiate(CardPrefab).GetComponent<PlayingCard>();
         joker.gameObject.name = joker.CardName;
-        joker.gameObject.GetComponentsInChildren<TextMeshPro>().ForEach(text => text.text = joker.CardName);
-        deck.Add(joker);
+        var texts = joker.gameObject.GetComponentsInChildren<TextMeshPro>();
+        foreach (var text in texts)
+        {
+            text.text = joker.CardName;
+            text.color = PlayingCard.BlackColour;
+        }
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
+        deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
+        foreach (var text in texts)
+        {
+            text.color = PlayingCard.RedColour;
+        }
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
 

@@ -85,9 +85,21 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     }
 #endregion
 
+    public static Color BlackColour = Color.black;
+    public static Color RedColour = Color.red;
 
     public Ranks Rank = Ranks.Joker;
     public Suits Suit = Suits.Joker;
+
+    public Color CardColour
+    {
+        get
+        {
+            if (Suit == Suits.Clubs || Suit == Suits.Spades)
+                return BlackColour;
+            return RedColour;
+        }
+    }
     public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
     public PlayerId Owner;
