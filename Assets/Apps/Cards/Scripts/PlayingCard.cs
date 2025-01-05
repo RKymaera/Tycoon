@@ -143,5 +143,11 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
         return ToString(card.Rank) + ToString(card.Suit);
     }
 #endregion
+
+    public void OnClicked()
+    {
+        Debug.Log("Card clicked: " + CardName);
+        transform.position = Vector3.zero;
+    }
 }
 }
