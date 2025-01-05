@@ -6,6 +6,7 @@ using System;
 using TMPro;
 
 using HandList = System.Collections.Generic.SortedSet<Apps.Cards.PlayingCard>;
+using Sirenix.Utilities;
 
 namespace Apps.Cards
 {
@@ -44,7 +45,7 @@ public class Dealer : MonoBehaviour
                 card.Rank = rank;
                 card.Suit = suit;
                 card.gameObject.name = card.CardName;
-                card.gameObject.GetComponent<TextMeshPro>().text = card.CardName;
+                card.gameObject.GetComponentsInChildren<TextMeshPro>().ForEach(text => text.text = card.CardName);
                 deck.Add(card);
             }
         }
