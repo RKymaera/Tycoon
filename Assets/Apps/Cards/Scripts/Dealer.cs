@@ -53,7 +53,7 @@ public class Dealer : MonoBehaviour
         // Add 4 Jokers
         var joker = Instantiate(CardPrefab).GetComponent<PlayingCard>();
         joker.gameObject.name = joker.CardName;
-        joker.gameObject.GetComponent<TextMeshPro>().text = joker.CardName;
+        joker.gameObject.GetComponentsInChildren<TextMeshPro>().ForEach(text => text.text = joker.CardName);
         deck.Add(joker);
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());

@@ -7,6 +7,6 @@ namespace Apps.Players
     public class PlayerManager : MonoBehaviour
     {
         public List<PlayerBase> Players;
-        public float CardSeparation = 0.1f;
+        public static readonly float CardSeparation = 0.01f;
     }
 }

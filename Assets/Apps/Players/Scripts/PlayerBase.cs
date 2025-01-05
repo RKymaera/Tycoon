@@ -70,7 +70,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
         foreach (var card in Hand)
         {
             card.transform.SetParent(transform);
-            card.transform.localPosition = new Vector3((i-Hand.Count/2) * 0.1f, 0, 0);
+            card.transform.localPosition = new Vector3((i-Hand.Count/2) * PlayerManager.CardSeparation, 0, 0);
             i++;
         }
     }
