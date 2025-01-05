@@ -102,7 +102,7 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     }
     public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
-    public PlayerId Owner;
+    public PlayerId Owner = PlayerId.NA;
 
 
 #region Operators

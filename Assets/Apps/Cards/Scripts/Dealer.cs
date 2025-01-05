@@ -19,7 +19,7 @@ public class Dealer : MonoBehaviour
 
     public event Action<HandList, PlayerId> DealHand = new Action<HandList, PlayerId>((hand, playerId) => { });
 
-    protected void Awake()
+    protected void Start()
     {
         Deck = CreateDeck();
         Debug.Log("Deck created with " + Deck.Count + " cards.");
@@ -72,7 +72,7 @@ public class Dealer : MonoBehaviour
         {
             text.color = PlayingCard.RedColour;
         }
-        deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
+        deck.Add(joker);
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
 
         return deck;
