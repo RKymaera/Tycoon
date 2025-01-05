@@ -681,7 +681,7 @@ MonoBehaviour:
   - {fileID: 852924244}
   - {fileID: 1166624094}
   - {fileID: 1478144625}
-  CardSeparation: {x: 0.02, y: 0, z: 0.001}
+  CardSeparation: {x: 0.025, y: 0, z: -0.001}
 --- !u!4 &1616772844
 Transform:
   m_ObjectHideFlags: 0

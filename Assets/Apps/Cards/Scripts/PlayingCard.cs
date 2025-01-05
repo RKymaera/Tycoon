@@ -79,7 +79,7 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
             case Suits.Spades:
                 return "♠";
             case Suits.Joker:
-                return "Joker";
+                return "";
         }
         return null;
     }
@@ -127,7 +127,7 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     public int CompareTo(PlayingCard other)
     {
         if (this.Rank == Ranks.Joker && other.gameObject != this.gameObject)
-            return -1;
+            return 1;
         if (this < other)
             return -1;
         if (this == other && this.Suit < other.Suit)
@@ -140,8 +140,6 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
 
     public static string ToString(PlayingCard card)
     {
-        if (card.Rank == Ranks.Joker)
-            return "Joker";
         return ToString(card.Rank) + ToString(card.Suit);
     }
 #endregion
