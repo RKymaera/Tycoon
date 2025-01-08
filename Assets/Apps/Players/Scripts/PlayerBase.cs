@@ -27,8 +27,6 @@ public class PlayerBase : MonoBehaviour, IPlayer
     // Game-specific properties
     private HandList _hand = new HandList();
     public HandList Hand => _hand;
-    private List<PlayingCard> _lastPlayedCards;
-    public List<PlayingCard> LastPlayedCards { get { return _lastPlayedCards; } }
     private PlayingCard.Ranks _selectedRank = PlayingCard.Ranks.NA;
     public PlayingCard.Ranks SelectedRank { get { return _selectedRank; } }
     private List<PlayingCard> _selectedCards = new List<PlayingCard>();
@@ -73,6 +71,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
 
     public void PlaySelectedCards()
     {
+        // Allow passes but ignore plays if not enough cards are selected
         if (_selectedCards.Count != 0 && _selectedCards.Count != _stackManager.NCardsRequired)
             return;
 
@@ -82,7 +81,6 @@ public class PlayerBase : MonoBehaviour, IPlayer
         }
 
         OnCardsPlayed(_selectedCards, Id);
-        _lastPlayedCards = _selectedCards;
         _selectedCards = new List<PlayingCard>();
         _selectedRank = PlayingCard.Ranks.NA;
         OrganizeHand();

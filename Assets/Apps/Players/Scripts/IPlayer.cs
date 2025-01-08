@@ -32,7 +32,6 @@ public interface IPlayer
     string Backstory { get; }
     string CurrentStory { get; }
     HandList Hand { get; }
-    List<PlayingCard> LastPlayedCards { get; }
     PlayingCard.Ranks SelectedRank { get; }
 
     void PlaySelectedCards();

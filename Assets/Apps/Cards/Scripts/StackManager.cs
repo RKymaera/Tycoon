@@ -57,6 +57,17 @@ public class StackManager : MonoBehaviour
         OnStackChanged();
     }
 
+    public void ResetStack()
+    {
+        foreach (var card in Stack)
+        {
+            Destroy(card.gameObject);
+        }
+        Stack.Clear();
+        NCardsRequired = 0;
+        OnStackChanged();
+    }
+
     protected void OrganizeStack()
     {
         int i = 0;
