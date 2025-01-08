@@ -18,6 +18,8 @@ public class PlayerBase : MonoBehaviour, IPlayer
     public PlayerId Id => _id;
     [SerializeField] private string _name;
     public string Name => _name;
+    [SerializeField] private PlayerRank _rank;
+    public PlayerRank Rank => _rank;
     [SerializeField] private string _backstory;
     public string Backstory => _backstory;
     [SerializeField] private string _currentStory;

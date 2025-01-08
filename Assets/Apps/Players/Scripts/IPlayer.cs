@@ -15,12 +15,20 @@ public enum PlayerId
     Three,
     Four,
 }
+public enum PlayerRank
+{
+    Poor = -1,
+    Commoner,
+    Rich,
+    Tycoon,
+}
 
 public interface IPlayer
 {
 
     PlayerId Id { get; }
     string Name { get; }
+    PlayerRank Rank { get; }
     string Backstory { get; }
     string CurrentStory { get; }
     HandList Hand { get; }
@@ -28,6 +36,6 @@ public interface IPlayer
 
     void OnReceivedHand(HandList hand, PlayerId playerId);
     void PlayNextCard();
-    event Action<Cards.PlayingCard, PlayerId> PlayCard;
+    event Action<PlayingCard, PlayerId> PlayCard;
 }
 }
