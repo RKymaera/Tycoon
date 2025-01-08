@@ -154,14 +154,12 @@ public class PlayerBase : MonoBehaviour, IPlayer
 
         foreach (var card in Hand)
         {
-            // Cards greater than the last card in the stack and that have enough copies
-            // can be selected
+            // Cards greater than the last card in the stack are selectable
             card.IsSelectable = _stackManager.Stack.Count == 0 ||
                 card.Rank > _stackManager.Stack.Last().Rank;
-            if (_stackManager.NCardsRequired > 1)
-            {
-                card.IsSelectable &= rankCounts[card.Rank] >= _stackManager.NCardsRequired;
-            }
+            // If only one card is required, all those cards are selectable, otherwise check the count
+            card.IsSelectable &= _stackManager.NCardsRequired <= 1 
+                || rankCounts[card.Rank] >= _stackManager.NCardsRequired;
         }
     }
 
