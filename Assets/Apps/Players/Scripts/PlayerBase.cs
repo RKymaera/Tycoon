@@ -73,6 +73,9 @@ public class PlayerBase : MonoBehaviour, IPlayer
 
     public void PlaySelectedCards()
     {
+        if (_selectedCards.Count != 0 && _selectedCards.Count != _stackManager.NCardsRequired)
+            return;
+
         foreach (var card in _selectedCards)
         {
             _hand.Remove(card);
