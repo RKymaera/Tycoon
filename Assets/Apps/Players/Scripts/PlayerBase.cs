@@ -72,7 +72,8 @@ public class PlayerBase : MonoBehaviour, IPlayer
     public void PlaySelectedCards()
     {
         // Allow passes but ignore plays if not enough cards are selected
-        if (_selectedCards.Count != 0 && _selectedCards.Count != _stackManager.NCardsRequired)
+        if (_selectedCards.Count > 0 && _stackManager.NCardsRequired > 0 &&
+            _selectedCards.Count != _stackManager.NCardsRequired)
             return;
 
         foreach (var card in _selectedCards)
