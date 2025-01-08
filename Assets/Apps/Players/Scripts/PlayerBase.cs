@@ -30,6 +30,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
     private PlayingCard.Ranks _selectedRank = PlayingCard.Ranks.NA;
     public PlayingCard.Ranks SelectedRank { get { return _selectedRank; } }
     private List<PlayingCard> _selectedCards = new List<PlayingCard>();
+    private bool _outOfPlayableCards = false;
 
     // References to UI elements
     [SerializeField] private GameObject _handContainer;
@@ -153,15 +154,17 @@ public class PlayerBase : MonoBehaviour, IPlayer
             }
         }
 
+        int nSelectableCards = 0;
         foreach (var card in Hand)
         {
-            // Cards greater than the last card in the stack are selectable
-            card.IsSelectable = _stackManager.Stack.Count == 0 ||
+            bool isHighEnough = _stackManager.Stack.Count == 0 ||
                 card.Rank > _stackManager.Stack.Last().Rank;
             // If only one card is required, all those cards are selectable, otherwise check the count
-            card.IsSelectable &= _stackManager.NCardsRequired <= 1 
-                || rankCounts[card.Rank] >= _stackManager.NCardsRequired;
+            card.IsSelectable = isHighEnough && (_stackManager.NCardsRequired <= 1
+                || rankCounts[card.Rank] >= _stackManager.NCardsRequired);
+            nSelectableCards += card.IsSelectable ? 1 : 0;
         }
+        _outOfPlayableCards = nSelectableCards == 0;
     }
 
     protected void OrganizeHand()
