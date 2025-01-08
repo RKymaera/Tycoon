@@ -121,13 +121,16 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
         {
             _isSelectable = value;
             OnSelectableChanged.Invoke(value);
+            OnSelectableChangedReversed.Invoke(!value);
         }
     }
+    public PlayerId Owner = PlayerId.NA;
+
     public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
     public UnityEvent<bool> OnSelectableChanged = new UnityEvent<bool>();
+    public UnityEvent<bool> OnSelectableChangedReversed = new UnityEvent<bool>();
 
     public event Action<PlayingCard> OnCardSelectedChanged = new Action<PlayingCard>((card) => { });
-    public PlayerId Owner = PlayerId.NA;
 
 
 #region Operators
