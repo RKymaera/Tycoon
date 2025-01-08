@@ -26,8 +26,8 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
         Queen,
         King,
         Ace,
-        Two,
         Joker,
+        Two,
     }
 
     public static string ToString(Ranks rank)
@@ -154,8 +154,11 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     // IComparable implementation
     public int CompareTo(PlayingCard other)
     {
-        if (this.Rank == Ranks.Joker && other.gameObject != this.gameObject)
-            return 1;
+        // Jokers are weird, handle them separately
+        if (this.Rank == Ranks.Joker && other.Rank == Ranks.Two)
+            return -1;
+        if (this.Rank == Ranks.Joker && this==other && other.gameObject != this.gameObject)
+            return this.CardColour == RedColour ? -1 : 1;
         if (this < other)
             return -1;
         if (this == other && this.Suit < other.Suit)

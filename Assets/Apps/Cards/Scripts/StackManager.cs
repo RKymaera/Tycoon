@@ -15,6 +15,7 @@ namespace Apps.Cards
 public class StackManager : MonoBehaviour
 {
     public List<PlayingCard> Stack = new List<PlayingCard>();
+    public int NCardsRequired = 0;
     public event Action OnStackChanged = new Action(() => { });
     [SerializeField] private PlayerManager _playerManager;
     
@@ -36,6 +37,16 @@ public class StackManager : MonoBehaviour
 
     public void OnReceivedCards(List<PlayingCard> cards, PlayerId playerId)
     {
+        if (cards.Count == 0)
+            return;
+
+        if (NCardsRequired != 0 && cards.Count != NCardsRequired)
+        {
+            Debug.LogError("Received " + cards.Count + " cards, but expected " + NCardsRequired + " cards.");
+            return;
+        }
+
+        NCardsRequired = cards.Count;
         foreach (var card in cards)
         {
             Stack.Add(card);

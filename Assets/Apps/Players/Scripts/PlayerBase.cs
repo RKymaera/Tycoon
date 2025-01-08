@@ -107,10 +107,18 @@ public class PlayerBase : MonoBehaviour, IPlayer
             return;
         if (card.IsSelected)
         {
+            // If the selected rank is different, deselect all other cards
             if (_selectedRank != card.Rank)
             {
                 _selectedCards.ForEach(c => c.IsSelected = false);
                 _selectedCards = new List<PlayingCard>();
+            }
+            // If the selection is full, remove the first card so it can be replaced
+            if (_stackManager.NCardsRequired > 0 &&
+                _selectedCards.Count == _stackManager.NCardsRequired)
+            {
+                _selectedCards.First().IsSelected = false;
+                _selectedCards.RemoveAt(0);
             }
             _selectedRank = card.Rank;
             _selectedCards.Add(card);
@@ -129,11 +137,30 @@ public class PlayerBase : MonoBehaviour, IPlayer
 
     private void UpdateCardSelectability()
     {
+        // Count the number of cards of each rank if more than one copy is required
+        var rankCounts = new Dictionary<PlayingCard.Ranks, int>();
+        if (_stackManager.NCardsRequired > 1)
+        {
+            foreach (var card in Hand)
+            {
+                if (!rankCounts.ContainsKey(card.Rank))
+                {
+                    rankCounts[card.Rank] = 0;
+                }
+                rankCounts[card.Rank]++;
+            }
+        }
+
         foreach (var card in Hand)
         {
-            // Any card greater than the last card in the stack can be selected
+            // Cards greater than the last card in the stack and that have enough copies
+            // can be selected
             card.IsSelectable = _stackManager.Stack.Count == 0 ||
                 card.Rank > _stackManager.Stack.Last().Rank;
+            if (_stackManager.NCardsRequired > 1)
+            {
+                card.IsSelectable &= rankCounts[card.Rank] >= _stackManager.NCardsRequired;
+            }
         }
     }
 

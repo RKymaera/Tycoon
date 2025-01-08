@@ -54,32 +54,15 @@ public class Dealer : MonoBehaviour
                 // Jokers are added later
                 if (rank == PlayingCard.Ranks.NA || rank == PlayingCard.Ranks.Joker)
                     continue;
-                var card = Instantiate(CardPrefab).GetComponent<PlayingCard>();
-                card.Rank = rank;
-                card.Suit = suit;
-                card.gameObject.name = card.CardName;
-                var cardTexts = card.gameObject.GetComponentsInChildren<TextMeshPro>();
-                foreach (var text in cardTexts)
-                {
-                    text.text = card.CardName;
-                    text.color = card.CardColour;
-                }
-                deck.Add(card);
+                deck.Add(InstantiateCard(rank, suit));
             }
         }
 
         // Add 4 Jokers
-        var joker = Instantiate(CardPrefab).GetComponent<PlayingCard>();
-        joker.gameObject.name = joker.CardName;
-        var texts = joker.gameObject.GetComponentsInChildren<TextMeshPro>();
-        foreach (var text in texts)
-        {
-            text.text = joker.CardName;
-            text.color = PlayingCard.BlackColour;
-        }
+        var joker = InstantiateCard(PlayingCard.Ranks.Joker, PlayingCard.Suits.Joker);
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
-        foreach (var text in texts)
+        foreach (var text in joker.gameObject.GetComponentsInChildren<TextMeshPro>())
         {
             text.color = PlayingCard.RedColour;
         }
@@ -87,6 +70,21 @@ public class Dealer : MonoBehaviour
         deck.Add(Instantiate(joker.gameObject).GetComponent<PlayingCard>());
 
         return deck;
+    }
+
+    private PlayingCard InstantiateCard(PlayingCard.Ranks rank, PlayingCard.Suits suit)
+    {
+        var card = Instantiate(CardPrefab).GetComponent<PlayingCard>();
+        card.Rank = rank;
+        card.Suit = suit;
+        card.gameObject.name = card.CardName;
+        var cardTexts = card.gameObject.GetComponentsInChildren<TextMeshPro>();
+        foreach (var text in cardTexts)
+        {
+            text.text = card.CardName;
+            text.color = card.CardColour;
+        }
+        return card;
     }
 
     private void Shuffle()
