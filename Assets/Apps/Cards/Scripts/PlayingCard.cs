@@ -13,6 +13,7 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     // Sorted by value
     public enum Ranks
     {
+        NA = -1,
         Three = 3,
         Four,
         Five,
@@ -104,7 +105,20 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
     public bool IsSelected = false;
+    private bool _isSelectable = true;
+    public bool IsSelectable
+    {
+        get { return _isSelectable; }
+        set
+        {
+            _isSelectable = value;
+            OnSelectableChanged.Invoke(value);
+        }
+    }
     public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
+    public UnityEvent<bool> OnSelectableChanged = new UnityEvent<bool>();
+
+    public event Action<PlayingCard> OnCardSelected = new Action<PlayingCard>((card) => { });
     public PlayerId Owner = PlayerId.NA;
 
 
@@ -149,10 +163,11 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
 
     public void OnClicked()
     {
-        if (IsPlayed)
+        if (IsPlayed || !IsSelectable)
             return;
         IsSelected = !IsSelected;
         OnSelectedChanged.Invoke(IsSelected);
+        OnCardSelected(this);
     }
 }
 }

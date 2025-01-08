@@ -15,6 +15,7 @@ namespace Apps.Cards
 public class StackManager : MonoBehaviour
 {
     public List<PlayingCard> Stack = new List<PlayingCard>();
+    public event Action OnStackChanged = new Action(() => { });
     [SerializeField] private PlayerManager _playerManager;
     
     protected void Awake()
@@ -42,6 +43,7 @@ public class StackManager : MonoBehaviour
             card.transform.SetParent(transform);
         }
         OrganizeStack();
+        OnStackChanged();
     }
 
     protected void OrganizeStack()

@@ -33,6 +33,7 @@ public interface IPlayer
     string CurrentStory { get; }
     HandList Hand { get; }
     List<PlayingCard> LastPlayedCards { get; }
+    PlayingCard.Ranks SelectedRank { get; }
 
     void PlaySelectedCards();
     event Action<List<PlayingCard>, PlayerId> OnCardsPlayed;

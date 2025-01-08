@@ -90,6 +90,7 @@ MonoBehaviour:
   _rank: 0
   _backstory: 
   _currentStory: 
+  _handContainer: {fileID: 1565106981187204803}
   _nameText: {fileID: 7454489128330562988}
   _dealer: {fileID: 0}
   _playerManager: {fileID: 0}

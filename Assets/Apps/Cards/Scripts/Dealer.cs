@@ -17,8 +17,18 @@ public class Dealer : MonoBehaviour
     public List<PlayingCard> Deck = null;
     public GameObject CardPrefab;
 
+    // References to singleton objects
+    [SerializeField] private PlayerManager _playerManager;
+
     public event Action<HandList, PlayerId> DealHand = new Action<HandList, PlayerId>((hand, playerId) => { });
 
+    protected void OnValidate()
+    {
+        if (_playerManager == null)
+        {
+            _playerManager = FindAnyObjectByType<PlayerManager>();
+        }
+    }
     protected void Start()
     {
         Deck = CreateDeck();
@@ -41,7 +51,8 @@ public class Dealer : MonoBehaviour
 
             foreach (PlayingCard.Ranks rank in Enum.GetValues(typeof(PlayingCard.Ranks)))
             {
-                if (rank == PlayingCard.Ranks.Joker)
+                // Jokers are added later
+                if (rank == PlayingCard.Ranks.NA || rank == PlayingCard.Ranks.Joker)
                     continue;
                 var card = Instantiate(CardPrefab).GetComponent<PlayingCard>();
                 card.Rank = rank;
@@ -101,7 +112,6 @@ public class Dealer : MonoBehaviour
             var hand = new HandList();
             for (int i = 0; i < nCards; i++)
             {
-                Deck[0].Owner = playerId;
                 hand.Add(Deck[0]);
                 Deck.RemoveAt(0);
             }
