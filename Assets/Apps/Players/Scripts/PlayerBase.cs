@@ -95,7 +95,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
         {
             card.Owner = Id;
             card.transform.SetParent(_handContainer.transform);
-            card.OnCardSelected += CardFromHandSelected;
+            card.OnCardSelectedChanged += CardFromHandSelected;
         }
         OrganizeHand();
         OnReceivedHand();
@@ -107,6 +107,11 @@ public class PlayerBase : MonoBehaviour, IPlayer
             return;
         if (card.IsSelected)
         {
+            if (_selectedRank != card.Rank)
+            {
+                _selectedCards.ForEach(c => c.IsSelected = false);
+                _selectedCards = new List<PlayingCard>();
+            }
             _selectedRank = card.Rank;
             _selectedCards.Add(card);
         }
@@ -126,11 +131,9 @@ public class PlayerBase : MonoBehaviour, IPlayer
     {
         foreach (var card in Hand)
         {
-            // If a rank is selected, only cards of that rank can be selected
-            // If no rank is selected, any card greater than the last card in the stack can be selected
-            card.IsSelectable = card.Rank == _selectedRank || 
-                (_selectedRank == PlayingCard.Ranks.NA && 
-                    (_stackManager.Stack.Count == 0 || card.Rank > _stackManager.Stack.Last().Rank));
+            // Any card greater than the last card in the stack can be selected
+            card.IsSelectable = _stackManager.Stack.Count == 0 ||
+                card.Rank > _stackManager.Stack.Last().Rank;
         }
     }
 

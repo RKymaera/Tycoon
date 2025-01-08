@@ -104,7 +104,15 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     }
     public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
-    public bool IsSelected = false;
+    private bool _isSelected = false;
+    public bool IsSelected {
+        get { return _isSelected; }
+        set
+        {
+            _isSelected = value;
+            OnSelectedChanged.Invoke(value);
+        }
+    }
     private bool _isSelectable = true;
     public bool IsSelectable
     {
@@ -118,7 +126,7 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
     public UnityEvent<bool> OnSelectableChanged = new UnityEvent<bool>();
 
-    public event Action<PlayingCard> OnCardSelected = new Action<PlayingCard>((card) => { });
+    public event Action<PlayingCard> OnCardSelectedChanged = new Action<PlayingCard>((card) => { });
     public PlayerId Owner = PlayerId.NA;
 
 
@@ -166,8 +174,9 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
         if (IsPlayed || !IsSelectable)
             return;
         IsSelected = !IsSelected;
-        OnSelectedChanged.Invoke(IsSelected);
-        OnCardSelected(this);
+        // Only emit this event if the card was interacted with to prevent
+        // recursive behaviour if the player's selected rank is changed
+        OnCardSelectedChanged.Invoke(this);
     }
 }
 }
