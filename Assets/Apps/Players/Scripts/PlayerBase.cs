@@ -3,9 +3,6 @@ using System;
 using System.Collections.Generic;
 using Apps.Cards;
 using TMPro;
-using Unity.Burst.Intrinsics;
-using UnityEngine.UI;
-using System.Collections;
 
 
 // Shorthand for the namespace
@@ -34,7 +31,8 @@ public class PlayerBase : MonoBehaviour, IPlayer
 
     public bool IsOpenHand = true;
 
-    public event Action<Cards.PlayingCard, PlayerId> PlayCard;
+    public event Action<List<PlayingCard>, PlayerId> OnCardsPlayed = new Action<List<PlayingCard>, PlayerId>((card, playerId) => { });
+    public event Action OnReceivedHand = new Action(() => { });
 
     protected void Awake()
     {
@@ -47,7 +45,7 @@ public class PlayerBase : MonoBehaviour, IPlayer
         {
             Debug.LogError("Dealer not found.");
         }
-        _dealer.DealHand += OnReceivedHand;
+        _dealer.DealHand += ReceivedHand;
         if (_playerManager == null)
         {
             _playerManager = FindAnyObjectByType<PlayerManager>();
@@ -58,19 +56,40 @@ public class PlayerBase : MonoBehaviour, IPlayer
         }
     }
 
-    public void OnReceivedHand(HandList hand, PlayerId playerId)
+    public void PlaySelectedCards()
+    {
+        var selectedCards = new List<PlayingCard>();
+        var hand = new HandList();
+        foreach (var card in Hand)
+        {
+            if (card.IsSelected)
+            {
+                selectedCards.Add(card);
+                card.IsSelected = false;
+                card.IsPlayed = true;
+            }
+            else
+            {
+                hand.Add(card);
+            }
+        }
+
+        if (selectedCards.Count == 0)
+            return;
+
+        OnCardsPlayed(selectedCards, Id);
+        _hand = hand;
+        OrganizeHand();
+    }
+
+    protected void ReceivedHand(HandList hand, PlayerId playerId)
     {
         if (playerId != Id)
             return;
         _hand = hand;
         Debug.Log(Name + " received " + Hand.Count + " cards.");
         OrganizeHand();
-    }
-
-    public void PlayNextCard()
-    {
-        if (Hand.Count == 0)
-            return;
+        OnReceivedHand();
     }
 
     protected void OrganizeHand()

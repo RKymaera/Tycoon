@@ -575,6 +575,10 @@ PrefabInstance:
       propertyPath: _name
       value: Player2
       objectReference: {fileID: 0}
+    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
       value: Player2
@@ -599,7 +603,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8958937494787237980, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -635,6 +639,10 @@ PrefabInstance:
       propertyPath: _name
       value: Player3
       objectReference: {fileID: 0}
+    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
       value: Player3
@@ -659,7 +667,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8958937494787237980, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -695,6 +703,10 @@ PrefabInstance:
       propertyPath: _name
       value: Player4
       objectReference: {fileID: 0}
+    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
       value: Player4
@@ -723,7 +735,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8958937494787237980, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -807,6 +819,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1696654442}
   - component: {fileID: 1696654441}
+  - component: {fileID: 1696654443}
   m_Layer: 0
   m_Name: GameStateManagers
   m_TagString: Untagged
@@ -843,6 +856,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1696654443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696654440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b8f4bc8932bb74ea7d7e25ebb20f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stack: []
+  _playerManager: {fileID: 0}
 --- !u!1001 &2687512214721792392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -854,6 +881,10 @@ PrefabInstance:
     - target: {fileID: 1069459904856184487, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: _name
       value: Player1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
@@ -879,7 +910,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 8958937494787237980, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 22a32093929213a47a6ac174fc311baf, type: 3}

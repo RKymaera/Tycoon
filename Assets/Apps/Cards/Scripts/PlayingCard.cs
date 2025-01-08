@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using Apps.Players;
 using System.Collections.Generic;
 using System;
@@ -102,6 +103,8 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     }
     public string CardName { get { return ToString(this); } }
     public bool IsPlayed = false;
+    public bool IsSelected = false;
+    public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
     public PlayerId Owner = PlayerId.NA;
 
 
@@ -146,8 +149,10 @@ public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
 
     public void OnClicked()
     {
-        Debug.Log("Card clicked: " + CardName);
-        transform.position = Vector3.zero;
+        if (IsPlayed)
+            return;
+        IsSelected = !IsSelected;
+        OnSelectedChanged.Invoke(IsSelected);
     }
 }
 }

@@ -34,8 +34,8 @@ public interface IPlayer
     HandList Hand { get; }
     List<PlayingCard> LastPlayedCards { get; }
 
-    void OnReceivedHand(HandList hand, PlayerId playerId);
-    void PlayNextCard();
-    event Action<PlayingCard, PlayerId> PlayCard;
+    void PlaySelectedCards();
+    event Action<List<PlayingCard>, PlayerId> OnCardsPlayed;
+    event Action OnReceivedHand;
 }
 }
