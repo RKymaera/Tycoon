@@ -1,4 +1,3 @@
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Apps.Cards;
@@ -6,7 +5,7 @@ using Apps.Cards;
 
 namespace Apps.Players
 {
-    using HandList = System.Collections.Generic.SortedSet<Apps.Cards.PlayingCard>;
+    using HandList = SortedSet<PlayingCard>;
     public enum PlayerId
     {
         NA = -1,
@@ -34,6 +33,7 @@ namespace Apps.Players
         HandList Hand { get; }
         PlayingCard.Ranks SelectedRank { get; }
         bool OutOfPlayableCards { get; }
+        void StartTurn();
         void PlaySelectedCards();
         void MoveToNextRound(PlayerRank awardedRank);
         event Action<List<PlayingCard>, IPlayer> OnCardsPlayed;

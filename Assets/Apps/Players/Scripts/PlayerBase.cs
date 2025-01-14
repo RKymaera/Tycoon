@@ -32,6 +32,7 @@ namespace Apps.Players
         private List<PlayingCard> _selectedCards = new List<PlayingCard>();
         private bool _outOfPlayableCards = false;
         public bool OutOfPlayableCards => _outOfPlayableCards;
+        private bool _hasTurnPriority = false;
 
         // References to UI elements
         [SerializeField] private GameObject _handContainer;
@@ -55,8 +56,18 @@ namespace Apps.Players
             OnFinishedRound += PlayerManager.Instance.PlayerFinishedRound;
         }
 
+        public void StartTurn()
+        {
+            _hasTurnPriority = true;
+        }
+
         public void PlaySelectedCards()
         {
+            if (!_hasTurnPriority)
+                return;
+
+            _hasTurnPriority = false;
+
             // Allow passes but ignore plays if not enough cards are selected
             if (_selectedCards.Count > 0 && StackManager.Instance.NCardsRequired > 0 &&
                 _selectedCards.Count != StackManager.Instance.NCardsRequired)
@@ -89,6 +100,7 @@ namespace Apps.Players
             Hand.Clear();
             _selectedCards.Clear();
             _selectedRank = PlayingCard.Ranks.NA;
+            _hasTurnPriority = false;
         }
 
         private void ReceivedHand(HandList hand, PlayerId playerId)

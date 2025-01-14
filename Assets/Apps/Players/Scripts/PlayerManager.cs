@@ -14,7 +14,22 @@ namespace Apps.Players
         public Vector3 CardSeparation = new Vector3(0.01f, 0, .001f);
 
         private int _nRounds = 0;
+        private List<IPlayer> _playerOrder = new List<IPlayer>();
         private List<IPlayer> _playersFinished = new List<IPlayer>();
+
+        protected void Start()
+        {
+            _playerOrder = Players.Cast<IPlayer>().ToList();
+            //Start with a random player
+            Players[Random.Range(0, Players.Count)].StartTurn();
+        }
+
+        public void PlayerTurnTaken(IPlayer player, bool stackReset)
+        {
+            IPlayer nextPlayer = stackReset ? player :
+                player.Id == _playerOrder.Last().Id ? _playerOrder.First() : _playerOrder[_playerOrder.IndexOf(player) + 1];
+            nextPlayer.StartTurn();
+        }
 
         public void PlayerFinishedRound(IPlayer player)
         {
@@ -35,11 +50,17 @@ namespace Apps.Players
                 _playersFinished.Add(tycoon);
             }
 
-            // Set the player rank based on the order of finishing
+            // Reset all players
             for (int i = 0; i < _playersFinished.Count; i++)
             {
                 _playersFinished[i].MoveToNextRound((PlayerRank)i);
             }
+
+            // Start the next round
+            Dealer.Instance.DealCards();
+            _playerOrder = _playersFinished;
+            // Start with the Tycoon or the Poor
+            _playerOrder[StackManager.Instance.SelectedRules.TycoonStarts ? 0 : Players.Count - 1].StartTurn();
 
             _nRounds++;
             _playersFinished.Clear();

@@ -13,18 +13,33 @@ namespace Apps.Cards
         {
             public bool Banish; // Miyako-Ochi
             public bool EightSlash; // Hachi-Giri
+            public bool TycoonStarts; // Start the round with Tycoon
         }
-        public Rules SelectedRules = new Rules { Banish = false, EightSlash = true };
+        public Rules SelectedRules = new Rules { Banish = false, EightSlash = true, TycoonStarts = true };
 
 
         public List<PlayingCard> Stack = new List<PlayingCard>();
         public int NCardsRequired = 0;
         public event Action OnStackChanged = new Action(() => { });
+
+        private int _consecutivePasses = 0;
+
         public void ReceiveCards(List<PlayingCard> cards, IPlayer player)
         {
             Debug.Log("Received " + cards.Count + " from " + player.Name);
             if (cards.Count == 0)
+            {
+                // Reset if all players pass
+                _consecutivePasses++;
+                if (_consecutivePasses == PlayerManager.Instance.Players.Count)
+                {
+                    ResetStack();
+                    PlayerManager.Instance.PlayerTurnTaken(player, true);
+                }
                 return;
+            }
+
+            _consecutivePasses = 0;
 
             if (NCardsRequired != 0 && cards.Count != NCardsRequired)
             {
@@ -42,7 +57,7 @@ namespace Apps.Cards
 
             OrganizeStack();
             OnStackChanged();
-            CheckStackStatus();
+            PlayerManager.Instance.PlayerTurnTaken(player, CheckStackStatus());
         }
 
         public void ResetStack()
@@ -68,16 +83,16 @@ namespace Apps.Cards
             }
         }
 
-        private void CheckStackStatus()
+        private bool CheckStackStatus()
         {
             if (Stack.Count == 0)
-                return;
+                return false;
 
             // Reset for EightSlash
             if (SelectedRules.EightSlash && Stack.Last().Rank == PlayingCard.Ranks.Eight)
             {
                 ResetStack();
-                return;
+                return true;
             }
             // Reset for PlayerStall
             bool playersStalled = true;
@@ -88,8 +103,9 @@ namespace Apps.Cards
             if (playersStalled)
             {
                 ResetStack();
-                return;
+                return true;
             }
+            return false;
         }
     }
 }

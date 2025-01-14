@@ -18,9 +18,12 @@ namespace Apps.Cards
 
         protected void Start()
         {
-            Deck = CreateDeck();
-            Debug.Log("Deck created with " + Deck.Count + " cards.");
+            DealCards();
+        }
 
+        public void DealCards()
+        {
+            Deck = CreateDeck();
             Shuffle();
             DealHandsToPlayers();
         }
