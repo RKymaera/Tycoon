@@ -31,11 +31,12 @@ namespace Apps.Cards
             {
                 // Reset if all players pass
                 _consecutivePasses++;
-                if (_consecutivePasses == PlayerManager.Instance.Players.Count)
+                bool allPlayersPassed = _consecutivePasses == PlayerManager.Instance.Players.Count;
+                if (allPlayersPassed)
                 {
                     ResetStack();
-                    PlayerManager.Instance.PlayerTurnTaken(player, true);
                 }
+                PlayerManager.Instance.PlayerTurnTaken(player, allPlayersPassed);
                 return;
             }
 
@@ -88,19 +89,9 @@ namespace Apps.Cards
             if (Stack.Count == 0)
                 return false;
 
-            // Reset for EightSlash
-            if (SelectedRules.EightSlash && Stack.Last().Rank == PlayingCard.Ranks.Eight)
-            {
-                ResetStack();
-                return true;
-            }
-            // Reset for PlayerStall
-            bool playersStalled = true;
-            foreach (var player in PlayerManager.Instance.Players)
-            {
-                playersStalled &= player.OutOfPlayableCards;
-            }
-            if (playersStalled)
+            // Reset for 2's and EightSlash
+            if (Stack.Last().Rank == PlayingCard.Ranks.Two ||
+                (SelectedRules.EightSlash && Stack.Last().Rank == PlayingCard.Ranks.Eight))
             {
                 ResetStack();
                 return true;

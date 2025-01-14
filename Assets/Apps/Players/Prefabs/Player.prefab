@@ -87,13 +87,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _name: Player
-  _rank: 0
+  _rank: 1
   _backstory: 
   _currentStory: 
+  OnTurnPriorityChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8958937494787237980}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _handContainer: {fileID: 1565106981187204803}
   _nameText: {fileID: 7454489128330562988}
-  _dealer: {fileID: 0}
-  _playerManager: {fileID: 0}
   IsOpenHand: 1
 --- !u!1 &8958937494787237980
 GameObject:

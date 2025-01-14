@@ -5,6 +5,7 @@ using TMPro;
 using System.Linq;
 
 using Apps.Cards;
+using UnityEngine.Events;
 
 
 // Shorthand for the namespace
@@ -33,6 +34,12 @@ namespace Apps.Players
         private bool _outOfPlayableCards = false;
         public bool OutOfPlayableCards => _outOfPlayableCards;
         private bool _hasTurnPriority = false;
+        public bool HasTurnPriority
+        {
+            get { return _hasTurnPriority; }
+            set { _hasTurnPriority = value; OnTurnPriorityChanged.Invoke(value); }
+        }
+        public UnityEvent<bool> OnTurnPriorityChanged = new UnityEvent<bool>();
 
         // References to UI elements
         [SerializeField] private GameObject _handContainer;
@@ -54,19 +61,27 @@ namespace Apps.Players
             StackManager.Instance.OnStackChanged += UpdateCardSelectability;
             OnCardsPlayed += StackManager.Instance.ReceiveCards;
             OnFinishedRound += PlayerManager.Instance.PlayerFinishedRound;
+
+            OnTurnPriorityChanged.Invoke(_hasTurnPriority);
         }
 
         public void StartTurn()
         {
-            _hasTurnPriority = true;
+            _selectedCards = new List<PlayingCard>();
+            _selectedRank = PlayingCard.Ranks.NA;
+            HasTurnPriority = true;
+            if (OutOfPlayableCards)
+            {
+                PlaySelectedCards();
+            }
         }
 
         public void PlaySelectedCards()
         {
-            if (!_hasTurnPriority)
+            if (!HasTurnPriority)
                 return;
 
-            _hasTurnPriority = false;
+            HasTurnPriority = false;
 
             // Allow passes but ignore plays if not enough cards are selected
             if (_selectedCards.Count > 0 && StackManager.Instance.NCardsRequired > 0 &&
@@ -121,8 +136,10 @@ namespace Apps.Players
 
         private void CardFromHandSelected(PlayingCard card)
         {
-            if (card.Owner != Id)
+            if (card.Owner != Id || !HasTurnPriority)
                 return;
+
+            card.IsSelected = !card.IsSelected;
             if (card.IsSelected)
             {
                 // If the selected rank is different, deselect all other cards

@@ -7,182 +7,182 @@ using System;
 
 namespace Apps.Cards
 {
-public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
-{
-#region Enums
-    // Sorted by value
-    public enum Ranks
+    public class PlayingCard : MonoBehaviour, IComparable<PlayingCard>
     {
-        NA = -1,
-        Three = 3,
-        Four,
-        Five,
-        Six,
-        Seven,
-        Eight,
-        Nine,
-        Ten,
-        Jack,
-        Queen,
-        King,
-        Ace,
-        Joker,
-        Two,
-    }
-
-    public static string ToString(Ranks rank)
-    {
-        switch(rank)
+        #region Enums
+        // Sorted by value
+        public enum Ranks
         {
-            case Ranks.Three:
-            case Ranks.Four:
-            case Ranks.Five:
-            case Ranks.Six:
-            case Ranks.Seven:
-            case Ranks.Eight:
-            case Ranks.Nine:
-            case Ranks.Ten:
-                return ((int)rank).ToString();
-            case Ranks.Jack:
-                return "J";
-            case Ranks.Queen:
-                return "Q";
-            case Ranks.King:
-                return "K";
-            case Ranks.Ace:
-                return "A";
-            case Ranks.Two:
-                return "2";
-            case Ranks.Joker:
-                return "Joker";
+            NA = -1,
+            Three = 3,
+            Four,
+            Five,
+            Six,
+            Seven,
+            Eight,
+            Nine,
+            Ten,
+            Jack,
+            Queen,
+            King,
+            Ace,
+            Joker,
+            Two,
         }
-        return null;
-    }
 
-    public enum Suits
-    {
-        Joker = 0,
-        Clubs,
-        Diamonds,
-        Hearts,
-        Spades,
-    }
-
-    public static string ToString(Suits suit)
-    {
-        switch(suit)
+        public static string ToString(Ranks rank)
         {
-            case Suits.Clubs:
-                return "♣";
-            case Suits.Diamonds:
-                return "♦";
-            case Suits.Hearts:
-                return "♥";
-            case Suits.Spades:
-                return "♠";
-            case Suits.Joker:
-                return "";
+            switch (rank)
+            {
+                case Ranks.Three:
+                case Ranks.Four:
+                case Ranks.Five:
+                case Ranks.Six:
+                case Ranks.Seven:
+                case Ranks.Eight:
+                case Ranks.Nine:
+                case Ranks.Ten:
+                    return ((int)rank).ToString();
+                case Ranks.Jack:
+                    return "J";
+                case Ranks.Queen:
+                    return "Q";
+                case Ranks.King:
+                    return "K";
+                case Ranks.Ace:
+                    return "A";
+                case Ranks.Two:
+                    return "2";
+                case Ranks.Joker:
+                    return "Joker";
+            }
+            return null;
         }
-        return null;
-    }
-#endregion
 
-    public static Color BlackColour = Color.black;
-    public static Color RedColour = Color.red;
-
-    public Ranks Rank = Ranks.Joker;
-    public Suits Suit = Suits.Joker;
-
-    public Color CardColour
-    {
-        get
+        public enum Suits
         {
-            if (Suit == Suits.Clubs || Suit == Suits.Spades)
-                return BlackColour;
-            return RedColour;
+            Joker = 0,
+            Clubs,
+            Diamonds,
+            Hearts,
+            Spades,
         }
-    }
-    public string CardName { get { return ToString(this); } }
-    public bool IsPlayed = false;
-    private bool _isSelected = false;
-    public bool IsSelected {
-        get { return _isSelected; }
-        set
+
+        public static string ToString(Suits suit)
         {
-            _isSelected = value;
-            OnSelectedChanged.Invoke(value);
+            switch (suit)
+            {
+                case Suits.Clubs:
+                    return "♣";
+                case Suits.Diamonds:
+                    return "♦";
+                case Suits.Hearts:
+                    return "♥";
+                case Suits.Spades:
+                    return "♠";
+                case Suits.Joker:
+                    return "";
+            }
+            return null;
         }
-    }
-    private bool _isSelectable = true;
-    public bool IsSelectable
-    {
-        get { return _isSelectable; }
-        set
+        #endregion
+
+        public static Color BlackColour = Color.black;
+        public static Color RedColour = Color.red;
+
+        public Ranks Rank = Ranks.Joker;
+        public Suits Suit = Suits.Joker;
+
+        public Color CardColour
         {
-            _isSelectable = value;
-            OnSelectableChanged.Invoke(value);
-            OnSelectableChangedReversed.Invoke(!value);
+            get
+            {
+                if (Suit == Suits.Clubs || Suit == Suits.Spades)
+                    return BlackColour;
+                return RedColour;
+            }
+        }
+        public string CardName { get { return ToString(this); } }
+        public bool IsPlayed = false;
+        private bool _isSelected = false;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnSelectedChanged.Invoke(value);
+            }
+        }
+        private bool _isSelectable = true;
+        public bool IsSelectable
+        {
+            get { return _isSelectable; }
+            set
+            {
+                _isSelectable = value;
+                OnSelectableChanged.Invoke(value);
+                OnSelectableChangedReversed.Invoke(!value);
+            }
+        }
+        public PlayerId Owner = PlayerId.NA;
+
+        public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
+        public UnityEvent<bool> OnSelectableChanged = new UnityEvent<bool>();
+        public UnityEvent<bool> OnSelectableChangedReversed = new UnityEvent<bool>();
+
+        public event Action<PlayingCard> OnCardSelectedChanged = new Action<PlayingCard>((card) => { });
+
+
+        #region Operators
+        // Equivalence operators
+        // For the purposes of this game, we will only be comparing the rank of the cards for equivalence operators
+        public static bool operator ==(PlayingCard a, PlayingCard b) => a.Rank == b.Rank;
+        public static bool operator !=(PlayingCard a, PlayingCard b) => a.Rank != b.Rank;
+
+        // Equals operator is overridden to reflect the Rank and Suit of the card
+        public override bool Equals(object obj) => obj is PlayingCard card && card.Rank == Rank && card.Suit == Suit;
+
+
+        // Sort operators
+        // The ranks are sorted by card value for this game, when other games are implemented, this may change
+        public static bool operator <(PlayingCard a, PlayingCard b) => a.Rank < b.Rank;
+        public static bool operator >(PlayingCard a, PlayingCard b) => a.Rank > b.Rank;
+
+        // Hash code is overridden to reflect the Rank and Suit of the card
+        public override int GetHashCode() => (int)Rank * 100 + (int)Suit;
+
+        // IComparable implementation
+        public int CompareTo(PlayingCard other)
+        {
+            // Jokers are weird, handle them separately
+            if (this.Rank == Ranks.Joker && other.Rank == Ranks.Two)
+                return -1;
+            if (this.Rank == Ranks.Joker && this == other && other.gameObject != this.gameObject)
+                return this.CardColour == RedColour ? -1 : 1;
+            if (this < other)
+                return -1;
+            if (this == other && this.Suit < other.Suit)
+                return -1;
+            if (this == other && this.Suit == other.Suit)
+                return 0;
+            return 1;
+        }
+
+
+        public static string ToString(PlayingCard card)
+        {
+            return ToString(card.Rank) + ToString(card.Suit);
+        }
+        #endregion
+
+        public void OnClicked()
+        {
+            if (IsPlayed || !IsSelectable)
+                return;
+            // Only emit this event if the card was interacted with to prevent
+            // recursive behaviour if the player's selected rank is changed
+            OnCardSelectedChanged.Invoke(this);
         }
     }
-    public PlayerId Owner = PlayerId.NA;
-
-    public UnityEvent<bool> OnSelectedChanged = new UnityEvent<bool>();
-    public UnityEvent<bool> OnSelectableChanged = new UnityEvent<bool>();
-    public UnityEvent<bool> OnSelectableChangedReversed = new UnityEvent<bool>();
-
-    public event Action<PlayingCard> OnCardSelectedChanged = new Action<PlayingCard>((card) => { });
-
-
-#region Operators
-    // Equivalence operators
-    // For the purposes of this game, we will only be comparing the rank of the cards for equivalence operators
-    public static bool operator ==(PlayingCard a, PlayingCard b) => a.Rank == b.Rank;
-    public static bool operator !=(PlayingCard a, PlayingCard b) => a.Rank != b.Rank;
-
-    // Equals operator is overridden to reflect the Rank and Suit of the card
-    public override bool Equals(object obj) => obj is PlayingCard card && card.Rank == Rank && card.Suit == Suit;
-
-
-    // Sort operators
-    // The ranks are sorted by card value for this game, when other games are implemented, this may change
-    public static bool operator <(PlayingCard a, PlayingCard b) => a.Rank < b.Rank;
-    public static bool operator >(PlayingCard a, PlayingCard b) => a.Rank > b.Rank;
-
-    // Hash code is overridden to reflect the Rank and Suit of the card
-    public override int GetHashCode() => (int)Rank * 100 + (int)Suit;
-
-    // IComparable implementation
-    public int CompareTo(PlayingCard other)
-    {
-        // Jokers are weird, handle them separately
-        if (this.Rank == Ranks.Joker && other.Rank == Ranks.Two)
-            return -1;
-        if (this.Rank == Ranks.Joker && this==other && other.gameObject != this.gameObject)
-            return this.CardColour == RedColour ? -1 : 1;
-        if (this < other)
-            return -1;
-        if (this == other && this.Suit < other.Suit)
-            return -1;
-        if (this == other && this.Suit == other.Suit)
-            return 0;
-        return 1;
-    }
-
-
-    public static string ToString(PlayingCard card)
-    {
-        return ToString(card.Rank) + ToString(card.Suit);
-    }
-#endregion
-
-    public void OnClicked()
-    {
-        if (IsPlayed || !IsSelectable)
-            return;
-        IsSelected = !IsSelected;
-        // Only emit this event if the card was interacted with to prevent
-        // recursive behaviour if the player's selected rank is changed
-        OnCardSelectedChanged.Invoke(this);
-    }
-}
 }

@@ -33,6 +33,8 @@ namespace Apps.Players
 
         public void PlayerFinishedRound(IPlayer player)
         {
+            if (_playersFinished.Contains(player))
+                return;
             _playersFinished.Add(player);
             if (_playersFinished.Count == Players.Count)
             {
