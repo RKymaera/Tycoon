@@ -28,13 +28,14 @@ namespace Apps.Players
 
         PlayerId Id { get; }
         string Name { get; }
-        PlayerRank Rank { get; set; }
+        PlayerRank Rank { get; }
         string Backstory { get; }
         string CurrentStory { get; }
         HandList Hand { get; }
         PlayingCard.Ranks SelectedRank { get; }
         bool OutOfPlayableCards { get; }
         void PlaySelectedCards();
+        void MoveToNextRound(PlayerRank awardedRank);
         event Action<List<PlayingCard>, IPlayer> OnCardsPlayed;
         event Action OnReceivedHand;
         event Action<IPlayer> OnFinishedRound;

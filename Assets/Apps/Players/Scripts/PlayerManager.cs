@@ -38,7 +38,7 @@ namespace Apps.Players
             // Set the player rank based on the order of finishing
             for (int i = 0; i < _playersFinished.Count; i++)
             {
-                _playersFinished[i].Rank = (PlayerRank)i;
+                _playersFinished[i].MoveToNextRound((PlayerRank)i);
             }
 
             _nRounds++;

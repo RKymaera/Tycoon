@@ -17,7 +17,8 @@ namespace Apps.Players
         public PlayerId Id => _id;
         [SerializeField] private string _name;
         public string Name => _name;
-        public PlayerRank Rank { get; set; }
+        [SerializeField] private PlayerRank _rank = PlayerRank.Commoner;
+        public PlayerRank Rank => _rank;
         [SerializeField] private string _backstory;
         public string Backstory => _backstory;
         [SerializeField] private string _currentStory;
@@ -80,8 +81,10 @@ namespace Apps.Players
             OrganizeHand();
         }
 
-        public void MoveToNextRound()
+        public void MoveToNextRound(PlayerRank awardedRank)
         {
+            _rank = awardedRank;
+
             _outOfPlayableCards = false;
             Hand.Clear();
             _selectedCards.Clear();
