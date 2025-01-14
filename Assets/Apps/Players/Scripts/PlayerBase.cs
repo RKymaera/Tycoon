@@ -17,8 +17,7 @@ namespace Apps.Players
         public PlayerId Id => _id;
         [SerializeField] private string _name;
         public string Name => _name;
-        [SerializeField] private PlayerRank _rank;
-        public PlayerRank Rank => _rank;
+        public PlayerRank Rank { get; set; }
         [SerializeField] private string _backstory;
         public string Backstory => _backstory;
         [SerializeField] private string _currentStory;
@@ -31,6 +30,7 @@ namespace Apps.Players
         public PlayingCard.Ranks SelectedRank { get { return _selectedRank; } }
         private List<PlayingCard> _selectedCards = new List<PlayingCard>();
         private bool _outOfPlayableCards = false;
+        public bool OutOfPlayableCards => _outOfPlayableCards;
 
         // References to UI elements
         [SerializeField] private GameObject _handContainer;
@@ -38,14 +38,20 @@ namespace Apps.Players
 
         public bool IsOpenHand = true;
 
-        public event Action<List<PlayingCard>, PlayerId> OnCardsPlayed = new Action<List<PlayingCard>, PlayerId>((card, playerId) => { });
+        public event Action<List<PlayingCard>, IPlayer> OnCardsPlayed = new Action<List<PlayingCard>, IPlayer>((card, player) => { });
         public event Action OnReceivedHand = new Action(() => { });
+        public event Action<IPlayer> OnFinishedRound = new Action<IPlayer>((player) => { });
+
 
         protected void Awake()
         {
             _nameText.text = Name;
+
+            // Connect to signals
             Dealer.Instance.DealHand += ReceivedHand;
             StackManager.Instance.OnStackChanged += UpdateCardSelectability;
+            OnCardsPlayed += StackManager.Instance.ReceiveCards;
+            OnFinishedRound += PlayerManager.Instance.PlayerFinishedRound;
         }
 
         public void PlaySelectedCards()
@@ -60,13 +66,29 @@ namespace Apps.Players
                 _hand.Remove(card);
             }
 
-            OnCardsPlayed(_selectedCards, Id);
+            // Send the cards
+            OnCardsPlayed(_selectedCards, this);
+
+            if (_hand.Count == 0)
+            {
+                OnFinishedRound(this);
+                return;
+            }
+
             _selectedCards = new List<PlayingCard>();
             _selectedRank = PlayingCard.Ranks.NA;
             OrganizeHand();
         }
 
-        protected void ReceivedHand(HandList hand, PlayerId playerId)
+        public void MoveToNextRound()
+        {
+            _outOfPlayableCards = false;
+            Hand.Clear();
+            _selectedCards.Clear();
+            _selectedRank = PlayingCard.Ranks.NA;
+        }
+
+        private void ReceivedHand(HandList hand, PlayerId playerId)
         {
             if (playerId != Id)
                 return;
@@ -82,7 +104,7 @@ namespace Apps.Players
             OnReceivedHand();
         }
 
-        protected void CardFromHandSelected(PlayingCard card)
+        private void CardFromHandSelected(PlayingCard card)
         {
             if (card.Owner != Id)
                 return;
@@ -145,7 +167,7 @@ namespace Apps.Players
             _outOfPlayableCards = nSelectableCards == 0;
         }
 
-        protected void OrganizeHand()
+        private void OrganizeHand()
         {
             if (Hand == null)
                 return;

@@ -17,7 +17,7 @@ namespace Apps.Players
     }
     public enum PlayerRank
     {
-        Poor = -1,
+        Poor = 0,
         Commoner,
         Rich,
         Tycoon,
@@ -28,14 +28,15 @@ namespace Apps.Players
 
         PlayerId Id { get; }
         string Name { get; }
-        PlayerRank Rank { get; }
+        PlayerRank Rank { get; set; }
         string Backstory { get; }
         string CurrentStory { get; }
         HandList Hand { get; }
         PlayingCard.Ranks SelectedRank { get; }
-
+        bool OutOfPlayableCards { get; }
         void PlaySelectedCards();
-        event Action<List<PlayingCard>, PlayerId> OnCardsPlayed;
+        event Action<List<PlayingCard>, IPlayer> OnCardsPlayed;
         event Action OnReceivedHand;
+        event Action<IPlayer> OnFinishedRound;
     }
 }
