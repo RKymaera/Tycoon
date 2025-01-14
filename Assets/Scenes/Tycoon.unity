@@ -575,12 +575,12 @@ PrefabInstance:
       propertyPath: _name
       value: Player2
       objectReference: {fileID: 0}
-    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
+      value: Player2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454489128330562988, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_text
       value: Player2
       objectReference: {fileID: 0}
     - target: {fileID: 7570067246503838957, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -639,12 +639,12 @@ PrefabInstance:
       propertyPath: _name
       value: Player3
       objectReference: {fileID: 0}
-    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
+      value: Player3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454489128330562988, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_text
       value: Player3
       objectReference: {fileID: 0}
     - target: {fileID: 7570067246503838957, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -703,12 +703,12 @@ PrefabInstance:
       propertyPath: _name
       value: Player4
       objectReference: {fileID: 0}
-    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
+      value: Player4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454489128330562988, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_text
       value: Player4
       objectReference: {fileID: 0}
     - target: {fileID: 7570067246503838957, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stack: []
-  _playerManager: {fileID: 0}
+  NCardsRequired: 0
 --- !u!1001 &2687512214721792392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -882,13 +882,13 @@ PrefabInstance:
       propertyPath: _name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 4915281528573359683, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5674726328286291828, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_Name
       value: MainPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 7454489128330562988, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
+      propertyPath: m_text
+      value: Player1
       objectReference: {fileID: 0}
     - target: {fileID: 7570067246503838957, guid: 22a32093929213a47a6ac174fc311baf, type: 3}
       propertyPath: m_AnchoredPosition.y
